@@ -38,6 +38,6 @@ HTTP y HTTPS no se cambian de forma atómica: cancelar la segunda confirmación 
 
 ## Reportar un problema
 
-No publiques credenciales, datos personales ni detalles explotables en un issue público. Usa el reporte privado de vulnerabilidades de GitHub si el repositorio lo tiene habilitado. Si no está disponible, abre únicamente un issue solicitando un canal privado, sin incluir el hallazgo sensible.
+No publiques credenciales, datos personales ni detalles explotables en un issue público. Usa el [reporte privado de vulnerabilidades](https://github.com/hectormonte1/navegador-menu/security/advisories/new), habilitado para este repositorio. Si no está disponible, abre únicamente un issue solicitando un canal privado, sin incluir el hallazgo sensible.
 
 La revisión de esta versión se documenta en [VALIDATION.md](docs/VALIDATION.md).

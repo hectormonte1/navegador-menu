@@ -1,5 +1,7 @@
 # Navegador 🌐
 
+[![Build and test](https://github.com/hectormonte1/navegador-menu/actions/workflows/ci.yml/badge.svg)](https://github.com/hectormonte1/navegador-menu/actions/workflows/ci.yml)
+
 Cambia entre Safari y Google Chrome desde la barra de menús de macOS.
 
 Un pequeño proyecto de portafolio: parte de una necesidad cotidiana, usa APIs nativas y documenta cómo pasó de prototipo a una aplicación mantenible.

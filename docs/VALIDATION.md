@@ -15,9 +15,15 @@ El directorio sincronizado añadió metadatos FinderInfo al bundle copiado, inva
 
 La primera ejecución de CI pasó las pruebas de lógica y detectó una advertencia de aislamiento de `NSWorkspace` en el SDK del runner. Se cambió el adaptador a la API con callback envuelta en una continuación, manteniendo la llamada en el actor principal sin relajar `warnings-as-errors`.
 
-## No comprobado todavía
+## Comprobado en GitHub
 
-- Ejecución del workflow remoto hasta que el repositorio esté publicado.
+- [Build and test: ejecución correcta](https://github.com/hectormonte1/navegador-menu/actions/runs/36622368028) para el commit `215da8a`: pruebas de lógica y compilaciones arm64/x86_64 completadas.
+- Detección de secretos y protección de subida habilitadas.
+- Reportes privados de vulnerabilidades habilitados.
+- Archivos publicados como código fuente; no se publicaron credenciales ni binarios de distribución.
+- Verificación local adicional: ambos ZIP se extrajeron y sus firmas ad hoc pasaron la comprobación estricta.
+
+## No comprobado todavía
 - Interacción visual y confirmaciones reales de esta revisión completa.
 - Ejecución en hardware Intel: se compiló para Intel, no se verificó allí.
 - Inicio de sesión real, cierre de sesión y reinicio con esta revisión.
