@@ -11,7 +11,9 @@
 
 ## Corrección observada durante la revisión
 
-El directorio sincronizado añadió metadatos FinderInfo al bundle copiado, invalidando su comprobación de firma. El script ahora elimina únicamente ese atributo del bundle generado y verifica también la copia final. No elimina cuarentena ni desactiva Gatekeeper. Si un servicio de sincronización vuelve a añadir metadatos más tarde, compila en una carpeta local no sincronizada.
+El directorio sincronizado añadió metadatos FinderInfo al bundle copiado, invalidando su comprobación de firma. Eliminar el atributo no fue suficiente: el servicio de sincronización lo volvía a crear. El script ahora verifica la app en una carpeta temporal local y la empaqueta en un ZIP por arquitectura, sin copiar el bundle abierto a la carpeta sincronizada. No elimina cuarentena ni desactiva Gatekeeper.
+
+La primera ejecución de CI pasó las pruebas de lógica y detectó una advertencia de aislamiento de `NSWorkspace` en el SDK del runner. Se cambió el adaptador a la API con callback envuelta en una continuación, manteniendo la llamada en el actor principal sin relajar `warnings-as-errors`.
 
 ## No comprobado todavía
 

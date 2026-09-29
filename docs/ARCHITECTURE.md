@@ -22,7 +22,7 @@ Se registra únicamente desde una acción del menú, usando `SMAppService.mainAp
 
 ## Construcción y distribución
 
-El script usa una carpeta temporal, limpia solo ese espacio al terminar y copia el artefacto a `build/`. No instala, no lanza y no descarga dependencias. La firma local es ad hoc, con hardened runtime; una release distribuible necesita firma de identidad y notarización separadas.
+El script usa una carpeta temporal, limpia solo ese espacio al terminar y empaqueta la app verificada en un ZIP por arquitectura dentro de `build/`. El ZIP evita que servicios de sincronización inyecten metadatos dentro del bundle firmado. No instala, no lanza y no descarga dependencias. La firma local es ad hoc, con hardened runtime; una release distribuible necesita firma de identidad y notarización separadas.
 
 ## Referencias
 

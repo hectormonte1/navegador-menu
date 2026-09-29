@@ -36,7 +36,7 @@ bash scripts/test.sh
 bash build.sh
 ```
 
-El resultado está en `build/Navegador.app`. La arquitectura se detecta automáticamente; también puede elegirse explícitamente:
+El resultado es `build/Navegador-arm64.zip` o `build/Navegador-x86_64.zip`, según la arquitectura. La arquitectura se detecta automáticamente; también puede elegirse explícitamente:
 
 ```bash
 ARCH=arm64 bash build.sh    # Apple Silicon
@@ -48,7 +48,7 @@ Cada ejecución genera una sola arquitectura. La compilación no instala ni abre
 ## Instalación y uso
 
 1. Compila en el Mac donde vas a usarla.
-2. Copia `build/Navegador.app` a Aplicaciones con Finder y ábrela.
+2. Descomprime el ZIP de tu arquitectura, copia `Navegador.app` a Aplicaciones con Finder y ábrela.
 3. Pulsa el globo, selecciona un navegador y acepta la confirmación de macOS si aparece.
 4. Si quieres, activa «Abrir al iniciar sesión». macOS puede pedir autorización en Ajustes del Sistema.
 
@@ -73,7 +73,7 @@ Las pruebas no cambian preferencias reales. Cubren estado desconocido, selecció
 Diagnóstico local opcional (solo consulta; no cambia preferencias):
 
 ```bash
-build/Navegador.app/Contents/MacOS/Navegador --diagnose
+/Applications/Navegador.app/Contents/MacOS/Navegador --diagnose
 ```
 
 Prueba manual antes de distribuir: cambia Safari → Chrome → Safari, comprueba ambos protocolos, cancela una confirmación y verifica que el menú muestre el estado real. Prueba también el inicio automático después de guardar tu trabajo. Las páginas ya abiertas y las aplicaciones que fuerzan su propio navegador no cambian.

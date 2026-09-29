@@ -15,12 +15,9 @@ cp Resources/Info.plist "$app/Contents/Info.plist"
 plutil -lint "$app/Contents/Info.plist"
 codesign --force --sign - --options runtime "$app"
 codesign --verify --strict "$app"
-# Copy only the generated app. Never install, launch, or alter system settings here.
-ditto --norsrc --noextattr "$app" "$PWD/build/Navegador.app"
-# Finder/cloud-sync metadata can invalidate a copied local bundle. Remove only
-# FinderInfo from this generated output, never quarantine or system protections.
-if xattr "$PWD/build/Navegador.app" | grep -qx com.apple.FinderInfo; then
-  xattr -d com.apple.FinderInfo "$PWD/build/Navegador.app"
-fi
-codesign --verify --strict "$PWD/build/Navegador.app"
-echo "Built build/Navegador.app ($arch, macOS 13+)"
+# Package the verified bundle before a synced directory can add Finder metadata.
+# The archive contains only the app; no caches, certificates or source paths.
+archive="$PWD/build/Navegador-$arch.zip"
+ditto -c -k --norsrc --noextattr --keepParent "$app" "$archive"
+unzip -t "$archive" >/dev/null
+echo "Built build/Navegador-$arch.zip ($arch, macOS 13+)"

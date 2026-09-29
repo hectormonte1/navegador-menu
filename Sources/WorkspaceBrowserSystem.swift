@@ -15,6 +15,15 @@ final class WorkspaceBrowserSystem: BrowserSystem {
     }
 
     func setDefault(_ application: URL, scheme: String) async throws {
-        try await NSWorkspace.shared.setDefaultApplication(at: application, toOpenURLsWithScheme: scheme)
+        // Keep NSWorkspace on the main actor, including on older AppKit SDKs.
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            NSWorkspace.shared.setDefaultApplication(at: application, toOpenURLsWithScheme: scheme) { error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume(returning: ())
+                }
+            }
+        }
     }
 }
