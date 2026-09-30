@@ -1,25 +1,25 @@
-# Del problema cotidiano al proyecto de portafolio
+# From an everyday problem to a portfolio project
 
-## Necesidad
+## The need
 
-Cambiar entre Safari y Chrome sin entrar cada vez a Ajustes del Sistema. El resultado es una utilidad discreta en la barra superior, con el estado actual visible.
+Switch between Safari and Chrome without opening System Settings each time. The result is a small menu bar utility that keeps the current state visible.
 
-## Evolución
+## Evolution
 
-1. **Prototipo:** globo, nombre y selección de dos navegadores.
-2. **Compatibilidad:** una compilación inicial heredó un requisito de macOS superior al equipo. La solución fue fijar el deployment target; el proceso actual también selecciona la arquitectura.
-3. **Uso diario:** inicio automático opcional y representación de HTTP/HTTPS cuando difieren.
-4. **Preparación pública:** separación de responsabilidades, pruebas, limpieza de referencias privadas y automatización de compilación.
+1. **Prototype:** a globe, browser name, and a choice of two browsers.
+2. **Compatibility:** an initial build inherited a macOS requirement newer than the target device. The fix was to set the deployment target explicitly; the current process also selects the architecture.
+3. **Daily use:** optional launch at login and separate reporting when HTTP and HTTPS associations differ.
+4. **Public preparation:** separation of responsibilities, tests, removal of private references, and automated builds.
 
-## Qué demuestra
+## What this project demonstrates
 
-- Convertir una necesidad concreta en una utilidad nativa pequeña.
-- Integrar APIs del sistema respetando la decisión del usuario.
-- Modelar operaciones parciales y fallos, sin presentar falsos éxitos.
-- Mantener código comprobable, documentación y un historial honesto.
+- Turning a specific need into a small native utility.
+- Integrating system APIs while respecting user decisions.
+- Modeling partial operations and failures without reporting false success.
+- Maintaining testable code, documentation, and an honest version history.
 
-La implementación se desarrolló con asistencia de Codex. El alcance no incluye un navegador, un proxy, una extensión ni un servicio remoto.
+The implementation was developed with assistance from Codex. It is not a browser, proxy, extension, or remote service.
 
-## Pendientes reales
+## Remaining work
 
-Prueba manual completa de esta revisión, firma Developer ID y notarización para distribución, decisión de licencia y capturas públicas sin información personal. No se atribuyen métricas de rendimiento ni seguridad que no se hayan medido.
+Full manual testing of this revision, Developer ID signing and notarization for distribution, a license decision, and public screenshots without personal information. No performance or security metrics are claimed without measurement.

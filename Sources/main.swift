@@ -17,7 +17,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     func name(_ id: String?) -> String {
-        guard let id else { return "Sin determinar" }
+        guard let id else { return "Unknown" }
         if let browser = browsers.first(where: { $0.id == id }) { return browser.name }
         guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: id) else { return id }
         return FileManager.default.displayName(atPath: url.path).replacingOccurrences(of: ".app", with: "")
@@ -35,7 +35,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             return
         }
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-        statusItem.button?.image = NSImage(systemSymbolName: "globe", accessibilityDescription: "Navegador predeterminado")
+        statusItem.button?.image = NSImage(systemSymbolName: "globe", accessibilityDescription: "Default browser")
         statusItem.button?.imagePosition = .imageLeading
         menu.delegate = self
         menu.autoenablesItems = false
@@ -59,8 +59,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     func refresh() {
         let state = service.state
         let http = state.http, https = state.https
-        let title = http == https ? name(https) : "HTTP/HTTPS distintos"
-        statusItem.button?.title = " " + (changing ? "Cambiando…" : title)
+        let title = http == https ? name(https) : "HTTP/HTTPS differ"
+        statusItem.button?.title = " " + (changing ? "Switching…" : title)
         statusItem.button?.toolTip = "HTTP: \(name(http)) · HTTPS: \(name(https))"
         menu.removeAllItems()
         for browser in browsers {
@@ -84,13 +84,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             }
         }
         menu.addItem(.separator())
-        let login = NSMenuItem(title: SMAppService.mainApp.status == .requiresApproval ? "Autorizar inicio de sesión…" : "Abrir al iniciar sesión", action: #selector(toggleLogin), keyEquivalent: "")
+        let login = NSMenuItem(title: SMAppService.mainApp.status == .requiresApproval ? "Approve Launch at Login…" : "Open at Login", action: #selector(toggleLogin), keyEquivalent: "")
         login.target = self
         login.isEnabled = !changing
         login.state = SMAppService.mainApp.status == .enabled ? .on : .off
         menu.addItem(login)
         menu.addItem(.separator())
-        let quit = NSMenuItem(title: "Salir", action: #selector(quitApp), keyEquivalent: "q")
+        let quit = NSMenuItem(title: "Quit", action: #selector(quitApp), keyEquivalent: "q")
         quit.target = self
         quit.isEnabled = !changing
         menu.addItem(quit)
@@ -105,7 +105,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             do {
                 try await service.change(to: id)
             } catch {
-                show("No se completó el cambio", "Si cancelaste la confirmación, se respetó tu decisión.\n\nHTTP: \(name(handler("http")))\nHTTPS: \(name(handler("https")))\n\n\(error.localizedDescription)")
+                show("Could Not Complete the Change", "If you canceled the confirmation, your choice was respected.\n\nHTTP: \(name(handler("http")))\nHTTPS: \(name(handler("https")))\n\n\(error.localizedDescription)")
             }
         }
     }
@@ -116,17 +116,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 try SMAppService.mainApp.register()
             }
             if SMAppService.mainApp.status == .requiresApproval {
-                show("Autoriza el inicio automático", "Activa Navegador en Ajustes del Sistema > General > Ítems de inicio y extensiones.")
+                show("Approve Launch at Login", "Enable Navegador in System Settings > General > Login Items & Extensions.")
                 SMAppService.openSystemSettingsLoginItems()
             }
-        } catch { show("No se pudo activar el inicio automático", error.localizedDescription) }
+        } catch { show("Could Not Enable Launch at Login", error.localizedDescription) }
         refresh()
     }
 
     @objc func toggleLogin() {
         if SMAppService.mainApp.status == .enabled {
             do { try SMAppService.mainApp.unregister() }
-            catch { show("No se pudo desactivar el inicio automático", error.localizedDescription) }
+            catch { show("Could Not Disable Launch at Login", error.localizedDescription) }
             refresh()
         } else { enableLogin() }
     }
@@ -136,7 +136,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let alert = NSAlert()
         alert.messageText = title
         alert.informativeText = message
-        alert.addButton(withTitle: "Aceptar")
+        alert.addButton(withTitle: "OK")
         alert.runModal()
     }
 

@@ -1,3 +1,3 @@
 # Navegador
 
-La documentación actual está en [README.md](README.md), incluyendo compilación, uso, pruebas y límites de distribución.
+The current English documentation is in [README.md](README.md), covering building, usage, testing, and distribution limitations. This legacy filename is retained for existing links.

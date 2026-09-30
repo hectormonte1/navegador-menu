@@ -1,43 +1,43 @@
-# Seguridad y privacidad
+# Security and privacy
 
-## Alcance
+## Scope
 
-Navegador consulta asociaciones locales y solicita a macOS cambiar únicamente los esquemas HTTP y HTTPS entre dos identificadores permitidos: Safari y Google Chrome. El inicio automático es una acción explícita del usuario mediante ServiceManagement.
+Navegador reads local associations and asks macOS to change only the HTTP and HTTPS schemes between two allowed browser identifiers: Safari and Google Chrome. Launch at login requires an explicit user action through ServiceManagement.
 
-La app no contiene llamadas de red, telemetría, actualización automática, lectura del historial, acceso a contraseñas o ejecución de comandos. El dominio `example.invalid` sirve únicamente para consultar asociaciones locales; nunca se abre ni se visita. Los scripts de compilación sí ejecutan las herramientas de desarrollo locales.
+The app contains no network requests, telemetry, automatic updates, browsing-history access, password access, or shell-command execution. The `example.invalid` domain is used only to query local associations; it is never opened or visited. Build scripts do run local development tools.
 
-No solicita permisos de accesibilidad, grabación de pantalla, disco completo ni privilegios de administrador. No incorpora claves, certificados de distribución ni dependencias externas.
+The app does not request Accessibility, Screen Recording, Full Disk Access, or administrator privileges. It contains no keys, distribution certificates, or external dependencies.
 
-## Controles implementados
+## Implemented controls
 
-- Lista cerrada de navegadores y validación de instalación.
-- Cambios secuenciales con bloqueo de solicitudes superpuestas.
-- Cancelación y errores detienen la secuencia; no hay reintentos ni rollback silenciosos.
-- Estado real de ambos protocolos después del cambio; no se presupone éxito por recibir un callback.
-- Inicio automático opcional desde el menú; se eliminó el argumento que podía registrarlo al arrancar.
-- Diagnóstico sin rutas personales.
-- Binarios, cachés, logs, archivos de entorno y claves excluidos de Git.
-- CI con permisos de lectura, sin credenciales persistentes y acción fijada a un commit; Dependabot propone actualizaciones.
-- Firma local con hardened runtime, sin excepciones de entitlements.
+- An explicit browser allowlist and installation checks.
+- Sequential changes with overlapping requests blocked.
+- Cancellation and errors stop the sequence; no silent retries or rollbacks.
+- Both protocols are checked after a change; a successful callback alone is not considered proof of success.
+- Optional launch at login through the menu; the argument that could register it automatically at startup was removed.
+- Diagnostics without personal filesystem paths.
+- Binaries, caches, logs, environment files, and keys excluded from Git.
+- CI with read-only permissions, no persisted credentials, and a commit-pinned action; Dependabot proposes updates.
+- Local signing with hardened runtime and no entitlement exceptions.
 
-## Límites
+## Limitations
 
-Esto es una revisión de alcance limitado, no una certificación ni garantía de ausencia de vulnerabilidades. La app no usa App Sandbox. La firma ad hoc no acredita identidad, y hardened runtime no reemplaza el sandbox ni la notarización.
+This is a limited review, not a certification or a guarantee that the app has no vulnerabilities. The app does not use App Sandbox. Ad hoc signing does not establish publisher identity, and hardened runtime does not replace sandboxing or notarization.
 
-Launch Services resuelve las aplicaciones instaladas por identificador; no hacemos una verificación independiente de su firma de proveedor. Se presupone un sistema y navegadores legítimos. Un atacante que ya controle la cuenta o el equipo queda fuera del modelo de amenaza.
+Launch Services resolves installed apps by identifier; the app does not independently verify their vendor signatures. It assumes a legitimate system and browser installation. An attacker who already controls the account or device is outside this threat model.
 
-HTTP y HTTPS no se cambian de forma atómica: cancelar la segunda confirmación puede dejar una selección parcial, que se muestra expresamente. Las pruebas automatizadas usan un sistema simulado y no ejercitan los diálogos reales de consentimiento.
+HTTP and HTTPS changes are not atomic: canceling the second confirmation can leave a partial selection, which is explicitly displayed. Automated tests use a simulated system and do not exercise real consent dialogs.
 
-## Antes de distribuir binarios a terceros
+## Before distributing binaries to others
 
-- Validar uso e inicio automático en hardware Intel y Apple Silicon y versiones de macOS soportadas.
-- Usar certificado Developer ID, hardened runtime y notarización de Apple; verificar el resultado antes de publicar.
-- Gestionar certificados y credenciales únicamente como secretos del entorno de firma, nunca dentro del repositorio.
-- Publicar versión, cambios y sumas de comprobación del artefacto.
-- No pedir que se desactive Gatekeeper ni eliminar la cuarentena como solución de instalación.
+- Validate interaction and launch at login on Intel and Apple Silicon hardware and supported macOS versions.
+- Use Developer ID signing, hardened runtime, and Apple notarization; verify the result before publishing.
+- Store certificates and credentials only as signing-environment secrets, never in the repository.
+- Publish the version, release notes, and artifact checksums.
+- Do not ask users to disable Gatekeeper or remove quarantine as an installation workaround.
 
-## Reportar un problema
+## Reporting a problem
 
-No publiques credenciales, datos personales ni detalles explotables en un issue público. Usa el [reporte privado de vulnerabilidades](https://github.com/hectormonte1/navegador-menu/security/advisories/new), habilitado para este repositorio. Si no está disponible, abre únicamente un issue solicitando un canal privado, sin incluir el hallazgo sensible.
+Do not post credentials, personal information, or exploitable details in a public issue. Use [private vulnerability reporting](https://github.com/hectormonte1/navegador-menu/security/advisories/new), which is enabled for this repository. If unavailable, open an issue requesting a private contact channel without including sensitive findings.
 
-La revisión de esta versión se documenta en [VALIDATION.md](docs/VALIDATION.md).
+The review of this version is documented in [VALIDATION.md](docs/VALIDATION.md).

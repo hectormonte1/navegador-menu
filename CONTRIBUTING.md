@@ -1,14 +1,16 @@
-# Contribuir
+# Contributing
 
-1. Describe el problema en un issue sin incluir datos personales.
-2. Crea una rama desde `main` y mantén cada cambio enfocado.
-3. Ejecuta `bash scripts/test.sh` y `bash build.sh`.
-4. Si cambias la integración del sistema, realiza la comprobación manual del README.
-5. Actualiza documentación y CHANGELOG cuando cambie el comportamiento.
-6. Abre un pull request indicando problema, solución y pruebas realizadas.
+1. Describe the problem in an issue without including personal information.
+2. Create a branch from `main` and keep each change focused.
+3. Run `bash scripts/test.sh` and `bash build.sh`.
+4. If you change system integration, complete the manual checks in the README.
+5. Update the documentation and CHANGELOG when behavior changes.
+6. Open a pull request describing the problem, solution, and validation performed.
 
-No subas apps compiladas, cachés, credenciales, rutas de usuario ni capturas del escritorio con información privada. No añadas dependencias, red, privilegios ni telemetría sin justificar su necesidad. No eludas confirmaciones de macOS.
+Do not commit compiled apps, caches, credentials, personal filesystem paths, or desktop screenshots containing private information. Justify any new dependencies, network access, privileges, or telemetry. Do not bypass macOS confirmation dialogs.
 
-Usa commits descriptivos: `fix: respetar cancelación del cambio`, `feat: ...`, `docs: ...`. El historial debe reflejar trabajo real; no reconstruir fechas ni resultados que no se comprobaron.
+Use descriptive commits, such as `fix: respect cancellation when switching browsers`, `feat: ...`, or `docs: ...`. History should reflect real work; do not reconstruct dates or claim unverified results.
 
-La licencia de reutilización sigue pendiente de decisión del titular.
+Write project documentation, commit messages, and pull request descriptions in English. Preserve exact interface labels where needed to help users find a control.
+
+A reuse license is still pending the owner's decision.

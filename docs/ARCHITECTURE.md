@@ -1,30 +1,30 @@
-# Decisiones técnicas
+# Technical decisions
 
-## Swift y AppKit
+## Swift and AppKit
 
-`NSStatusItem` permite un menú nativo sin ventana principal. `LSUIElement` evita un icono permanente en el Dock. Se requiere macOS 13 por `SMAppService`.
+`NSStatusItem` provides a native menu without a main window. `LSUIElement` prevents a permanent Dock icon. macOS 13 is required for `SMAppService`.
 
-## Fuente de verdad
+## Source of truth
 
-Launch Services mantiene las asociaciones. No hay copia persistida en preferencias de la app: cada refresco vuelve a consultar HTTP y HTTPS. El timer deja de reconstruir el menú mientras está abierto para no mover opciones bajo el cursor.
+Launch Services owns browser associations. The app does not persist a separate copy in its preferences: each refresh queries HTTP and HTTPS again. The timer avoids rebuilding the menu while it is open so options do not move under the pointer.
 
-## Frontera de pruebas
+## Testing boundary
 
-`BrowserSystem` abstrae lectura y escritura. `WorkspaceBrowserSystem` adapta `NSWorkspace`; `BrowserService` implementa la secuencia, la lista permitida y el bloqueo de concurrencia. Las pruebas inyectan un sistema simulado, por lo que no abren confirmaciones ni modifican preferencias.
+`BrowserSystem` abstracts reads and writes. `WorkspaceBrowserSystem` adapts `NSWorkspace`; `BrowserService` implements the switching sequence, browser allowlist, and concurrency guard. Tests inject a simulated system, so they neither open confirmation dialogs nor change preferences.
 
-## Cambios parciales
+## Partial changes
 
-El sistema ofrece dos operaciones independientes. La secuencia se detiene ante error/cancelación y consulta el resultado real. No revierte automáticamente el primer cambio: hacerlo podría contradecir el consentimiento que el usuario acaba de dar.
+The system exposes two independent operations. The sequence stops on error or cancellation and reads back the actual result. It does not automatically undo the first change, because doing so could contradict consent the user just gave.
 
-## Inicio automático
+## Launch at login
 
-Se registra únicamente desde una acción del menú, usando `SMAppService.mainApp`. Se deja al sistema solicitar autorización. No hay LaunchAgent artesanal ni escritura en preferencias privadas.
+Registration happens only through a menu action, using `SMAppService.mainApp`. The system handles any required approval. There is no custom LaunchAgent or direct modification of private preferences.
 
-## Construcción y distribución
+## Build and distribution
 
-El script usa una carpeta temporal, limpia solo ese espacio al terminar y empaqueta la app verificada en un ZIP por arquitectura dentro de `build/`. El ZIP evita que servicios de sincronización inyecten metadatos dentro del bundle firmado. No instala, no lanza y no descarga dependencias. La firma local es ad hoc, con hardened runtime; una release distribuible necesita firma de identidad y notarización separadas.
+The script uses a temporary directory, cleans up only that directory, and packages the verified app into an architecture-specific ZIP under `build/`. The ZIP prevents synchronization services from injecting metadata into the signed bundle. The script does not install or launch the app, or download dependencies. Local signing is ad hoc with hardened runtime; a distributable release needs separate identity signing and notarization.
 
-## Referencias
+## References
 
-- [NSWorkspace: cambiar asociaciones](https://developer.apple.com/documentation/appkit/nsworkspace/setdefaultapplication(at:toopenurlswithscheme:completion:))
+- [NSWorkspace: changing associations](https://developer.apple.com/documentation/appkit/nsworkspace/setdefaultapplication(at:toopenurlswithscheme:completion:))
 - [SMAppService](https://developer.apple.com/documentation/servicemanagement/smappservice)

@@ -1,32 +1,33 @@
-# Validación — 2026-09-29
+# Validation — 2026-09-29
 
-## Comprobado localmente
+## Verified locally
 
-- 12 comprobaciones de lógica pasaron con un sistema simulado.
-- Compilación nativa arm64 y compilación cruzada x86_64 completadas con warnings tratados como errores.
-- Manifiesto válido, deployment target macOS 13 y firma ad hoc con hardened runtime verificados durante la compilación.
-- Revisión de código y búsqueda de patrones de claves privadas, tokens de GitHub, claves AWS, rutas personales y referencias privadas: sin hallazgos en los archivos preparados para publicar.
-- Los binarios y cachés están excluidos del historial.
-- Sintaxis de scripts comprobada.
+- All 12 logic checks passed using a simulated system.
+- Native arm64 and cross-compiled x86_64 builds completed with warnings treated as errors.
+- The manifest, macOS 13 deployment target, and ad hoc signature with hardened runtime were verified during the build.
+- Code review and pattern searches for private keys, GitHub tokens, AWS keys, personal paths, and private references found no matches in the files prepared for publication.
+- Binaries and caches are excluded from version history.
+- Shell-script syntax was checked.
 
-## Corrección observada durante la revisión
+## Issues fixed during review
 
-El directorio sincronizado añadió metadatos FinderInfo al bundle copiado, invalidando su comprobación de firma. Eliminar el atributo no fue suficiente: el servicio de sincronización lo volvía a crear. El script ahora verifica la app en una carpeta temporal local y la empaqueta en un ZIP por arquitectura, sin copiar el bundle abierto a la carpeta sincronizada. No elimina cuarentena ni desactiva Gatekeeper.
+The synchronized directory added FinderInfo metadata to the copied bundle, causing signature verification to fail. Removing the attribute was not enough: the synchronization service recreated it. The script now verifies the app in a local temporary directory and packages it into an architecture-specific ZIP instead of copying the unpacked bundle into the synchronized directory. It does not remove quarantine or disable Gatekeeper.
 
-La primera ejecución de CI pasó las pruebas de lógica y detectó una advertencia de aislamiento de `NSWorkspace` en el SDK del runner. Se cambió el adaptador a la API con callback envuelta en una continuación, manteniendo la llamada en el actor principal sin relajar `warnings-as-errors`.
+The first CI run passed the logic tests but detected an `NSWorkspace` isolation warning in the runner's SDK. The adapter was changed to wrap the callback API in a continuation, keeping the call on the main actor without relaxing `warnings-as-errors`.
 
-## Comprobado en GitHub
+## Verified on GitHub
 
-- [Build and test: ejecución correcta](https://github.com/hectormonte1/navegador-menu/actions/runs/36622368028) para el commit `215da8a`: pruebas de lógica y compilaciones arm64/x86_64 completadas.
-- Detección de secretos y protección de subida habilitadas.
-- Reportes privados de vulnerabilidades habilitados.
-- Archivos publicados como código fuente; no se publicaron credenciales ni binarios de distribución.
-- Verificación local adicional: ambos ZIP se extrajeron y sus firmas ad hoc pasaron la comprobación estricta.
+- [Successful Build and test run](https://github.com/hectormonte1/navegador-menu/actions/runs/36622368028) for commit `215da8a`: logic tests and arm64/x86_64 builds completed.
+- Secret scanning and push protection enabled.
+- Private vulnerability reporting enabled.
+- Source files published without credentials or distribution binaries.
+- Additional local verification: both ZIPs were extracted and their ad hoc signatures passed strict verification.
 
-## No comprobado todavía
-- Interacción visual y confirmaciones reales de esta revisión completa.
-- Ejecución en hardware Intel: se compiló para Intel, no se verificó allí.
-- Inicio de sesión real, cierre de sesión y reinicio con esta revisión.
-- Firma Developer ID, notarización y distribución de binarios.
+## Not yet verified
 
-La revisión no reemplaza una auditoría de seguridad independiente. No se modificaron asociaciones del usuario para ejecutar las pruebas.
+- Full visual interaction and real confirmation dialogs for this revision.
+- Execution on Intel hardware: an Intel build was produced but not tested on an Intel device.
+- Actual login, logout, and restart behavior with this revision.
+- Developer ID signing, notarization, and binary distribution.
+
+This review does not replace an independent security audit. The tests did not modify the user's browser associations.

@@ -2,9 +2,9 @@
 
 [![Build and test](https://github.com/hectormonte1/navegador-menu/actions/workflows/ci.yml/badge.svg)](https://github.com/hectormonte1/navegador-menu/actions/workflows/ci.yml)
 
-Cambia entre Safari y Google Chrome desde la barra de menús de macOS.
+Switch between Safari and Google Chrome from the macOS menu bar.
 
-Un pequeño proyecto de portafolio: parte de una necesidad cotidiana, usa APIs nativas y documenta cómo pasó de prototipo a una aplicación mantenible.
+A small portfolio project built around an everyday need, using native APIs and documenting the journey from prototype to a maintainable app.
 
 ```text
 🌐 Safari
@@ -12,80 +12,84 @@ Un pequeño proyecto de portafolio: parte de una necesidad cotidiana, usa APIs n
 │ ✓ Safari                         │
 │   Google Chrome                  │
 │ ──────────────────────────────── │
-│   Abrir al iniciar sesión        │
+│   Open at Login                  │
 │ ──────────────────────────────── │
-│   Salir                          │
+│   Quit                           │
 └──────────────────────────────────┘
 ```
 
-*Esquema ilustrativo del menú, no una captura de pantalla.*
+*Illustrative menu, not a screenshot.*
 
-## Qué hace
+## Features
 
-- Muestra el navegador predeterminado y permite elegir Safari o Chrome.
-- Comprueba HTTP y HTTPS por separado; una marca parcial indica que difieren.
-- Respeta las confirmaciones y cancelaciones de macOS.
-- Ofrece inicio automático opcional, desactivado por defecto para una instalación nueva.
-- Se actualiza al abrir el menú y cada cinco segundos cuando el menú está cerrado.
-- Funciona sin servidores, cuentas, analítica ni dependencias de terceros.
+- Displays the default browser and lets you choose Safari or Chrome.
+- Checks HTTP and HTTPS separately; a partial checkmark means their associations differ.
+- Respects macOS confirmation dialogs and cancellations.
+- Offers optional launch at login, disabled by default for a new installation.
+- Refreshes when you open the menu and every five seconds while it is closed.
+- Runs without servers, accounts, analytics, or third-party dependencies.
 
-## Requisitos y compilación
+The app interface and project documentation are in English. Native macOS dialogs and system-provided error details follow your system language.
 
-macOS 13 o posterior. Para compilar: Xcode Command Line Tools con Swift 5.9 o posterior (Xcode 15+). Safari viene con macOS; Chrome debe estar instalado para seleccionarlo.
+## Requirements and build
+
+macOS 13 or later. Building requires Xcode Command Line Tools with Swift 5.9 or later (Xcode 15+). Safari ships with macOS; Chrome must be installed to select it.
 
 ```bash
 bash scripts/test.sh
 bash build.sh
 ```
 
-El resultado es `build/Navegador-arm64.zip` o `build/Navegador-x86_64.zip`, según la arquitectura. La arquitectura se detecta automáticamente; también puede elegirse explícitamente:
+The output is `build/Navegador-arm64.zip` or `build/Navegador-x86_64.zip`, depending on the architecture. Architecture is detected automatically, or you can select it explicitly:
 
 ```bash
 ARCH=arm64 bash build.sh    # Apple Silicon
 ARCH=x86_64 bash build.sh   # Intel
 ```
 
-Cada ejecución genera una sola arquitectura. La compilación no instala ni abre la app y no cambia preferencias. La versión mínima de macOS se fija tanto en el ejecutable como en el manifiesto para evitar incompatibilidades accidentales.
+Each build targets one architecture. Building does not install or launch the app, or change system preferences. The minimum macOS version is set explicitly in both the executable and the manifest to prevent accidental compatibility issues.
 
-## Instalación y uso
+## Installation and usage
 
-1. Compila en el Mac donde vas a usarla.
-2. Descomprime el ZIP de tu arquitectura, copia `Navegador.app` a Aplicaciones con Finder y ábrela.
-3. Pulsa el globo, selecciona un navegador y acepta la confirmación de macOS si aparece.
-4. Si quieres, activa «Abrir al iniciar sesión». macOS puede pedir autorización en Ajustes del Sistema.
+1. Build on the Mac where you intend to use the app.
+2. Extract the ZIP for your architecture, copy `Navegador.app` to Applications using Finder, and open it.
+3. Click the globe, select a browser, and accept the macOS confirmation if prompted.
+4. Optionally enable **Open at Login**. macOS may require approval in System Settings.
 
-La compilación local lleva firma **ad hoc** y hardened runtime. No tiene firma Developer ID ni notarización: no se ofrece todavía como descarga certificada para terceros. No desactives Gatekeeper para instalarla; consulta [SEGURIDAD](SECURITY.md).
+Local builds use an **ad hoc** signature and hardened runtime. They are not Developer ID signed or notarized, and are not yet offered as notarized downloads for other users. Do not disable Gatekeeper to install them; see [SECURITY](SECURITY.md).
 
-Al actualizar desde el prototipo, desactiva su inicio automático y ciérralo antes de abrir esta versión. El identificador de la app cambió a uno del proyecto; mantener ambos puede mostrar dos menús.
+When upgrading from the prototype, disable its launch-at-login setting and quit it before opening this version. The app now uses a project-specific bundle identifier; running both versions can create duplicate menu items.
 
-«Salir» cierra la app pero no desactiva el inicio automático. Para desinstalar: desmarca esa opción, sal y mueve la app a la Papelera. El navegador predeterminado queda como lo elegiste.
+**Quit** closes the app without disabling launch at login. To uninstall, disable that option, quit, and move the app to Trash. Your selected default browser remains in place.
 
-## Desarrollo y pruebas
+## Development and testing
 
-| Archivo | Responsabilidad |
+| File | Responsibility |
 | --- | --- |
-| `Sources/main.swift` | Menú, mensajes e inicio de sesión |
-| `Sources/BrowserService.swift` | Estado y secuencia de cambio verificable |
-| `Sources/WorkspaceBrowserSystem.swift` | Integración con APIs de macOS |
-| `Resources/Info.plist` | Identidad y versión mínima |
-| `Tests/BrowserServiceTests.swift` | Pruebas con sistema simulado |
+| `Sources/main.swift` | Menu, messages, and launch at login |
+| `Sources/BrowserService.swift` | Browser state and testable switching sequence |
+| `Sources/WorkspaceBrowserSystem.swift` | macOS API integration |
+| `Resources/Info.plist` | App identity and minimum system version |
+| `Tests/BrowserServiceTests.swift` | Tests using a simulated system |
 
-Las pruebas no cambian preferencias reales. Cubren estado desconocido, selección parcial/completa, ausencia del navegador, identificadores no admitidos, cambios innecesarios, cancelación, fallos parciales, confirmaciones sin efecto y concurrencia. GitHub Actions ejecuta las pruebas y compila las dos arquitecturas; eso no sustituye una prueba visual en hardware Intel y Apple Silicon.
+Tests do not change real preferences. They cover unknown state, partial and complete selection, missing browsers, unsupported identifiers, unnecessary changes, cancellation, partial failures, callbacks without applied changes, and concurrent requests. GitHub Actions runs the tests and builds both architectures; this does not replace visual testing on Intel and Apple Silicon hardware.
 
-Diagnóstico local opcional (solo consulta; no cambia preferencias):
+Optional local diagnostics (read-only; no preference changes):
 
 ```bash
 /Applications/Navegador.app/Contents/MacOS/Navegador --diagnose
 ```
 
-Prueba manual antes de distribuir: cambia Safari → Chrome → Safari, comprueba ambos protocolos, cancela una confirmación y verifica que el menú muestre el estado real. Prueba también el inicio automático después de guardar tu trabajo. Las páginas ya abiertas y las aplicaciones que fuerzan su propio navegador no cambian.
+Adjust the path if you installed the app in your user Applications folder.
 
-## Historia del proyecto
+Before distribution, manually switch Safari → Chrome → Safari, check both protocols, cancel a confirmation, and verify that the menu reports the actual state. Test launch at login after saving your work. Existing browser tabs and apps that force their own browser are unaffected.
 
-Lee [el caso de estudio](docs/CASE_STUDY.md), [las decisiones técnicas](docs/ARCHITECTURE.md) y [el registro de cambios](CHANGELOG.md). El historial Git empieza con esta versión saneada: los prototipos anteriores se documentan, pero no se inventan commits retroactivos.
+## Project history
 
-Creado por [hectormonte1](https://github.com/hectormonte1), con asistencia de Codex. Para contribuir, consulta [CONTRIBUTING](CONTRIBUTING.md).
+Read the [case study](docs/CASE_STUDY.md), [technical decisions](docs/ARCHITECTURE.md), and [changelog](CHANGELOG.md). Git history starts with the version prepared for public release: earlier prototypes are documented, without inventing retroactive commits.
 
-## Permisos de reutilización
+Created by [hectormonte1](https://github.com/hectormonte1), with assistance from Codex. See [CONTRIBUTING](CONTRIBUTING.md) to contribute.
 
-Este repositorio se publica como portafolio. Todavía no se ha elegido una licencia de código abierto; su visibilidad pública no concede automáticamente permisos generales de reutilización.
+## Reuse permissions
+
+This repository is published as a portfolio project. An open-source license has not yet been selected; public visibility does not automatically grant general reuse permissions.

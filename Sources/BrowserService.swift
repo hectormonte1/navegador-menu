@@ -33,10 +33,10 @@ enum BrowserChangeError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .unsupported: return "Solo se admiten Safari y Google Chrome."
-        case .missing: return "El navegador seleccionado no está instalado."
-        case .busy: return "Ya hay un cambio en curso."
-        case .incomplete: return "HTTP y HTTPS todavía no usan el mismo navegador. Revisa el estado del menú antes de volver a intentarlo."
+        case .unsupported: return "Only Safari and Google Chrome are supported."
+        case .missing: return "The selected browser is not installed."
+        case .busy: return "A browser change is already in progress."
+        case .incomplete: return "HTTP and HTTPS still use different browsers. Check the menu status before trying again."
         }
     }
 }
