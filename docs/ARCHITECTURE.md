@@ -22,7 +22,7 @@ Registration happens only through a menu action, using `SMAppService.mainApp`. T
 
 ## Build and distribution
 
-The script uses a temporary directory, cleans up only that directory, and packages the verified app into an architecture-specific ZIP under `build/`. The ZIP prevents synchronization services from injecting metadata into the signed bundle. The script does not install or launch the app, or download dependencies. Local signing is ad hoc with hardened runtime; a distributable release needs separate identity signing and notarization.
+The script uses a temporary directory, cleans up only that directory, and packages the verified app into an architecture-specific ZIP under `build/`. The ZIP prevents synchronization services from injecting metadata into the signed bundle. The script does not install or launch the app, or download dependencies. Local signing is ad hoc with hardened runtime; experimental release ZIPs retain that limitation. A Developer ID signed and notarized release needs separate identity signing and notarization.
 
 ## References
 

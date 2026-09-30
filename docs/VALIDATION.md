@@ -20,7 +20,7 @@ The first CI run passed the logic tests but detected an `NSWorkspace` isolation 
 - [Successful Build and test run](https://github.com/hectormonte1/navegador-menu/actions/runs/36622368028) for commit `215da8a`: logic tests and arm64/x86_64 builds completed.
 - Secret scanning and push protection enabled.
 - Private vulnerability reporting enabled.
-- Source files published without credentials or distribution binaries.
+- Source files published without credentials; distribution ZIPs are attached separately to the v1.1.1 release.
 - Additional local verification: both ZIPs were extracted and their ad hoc signatures passed strict verification.
 
 ## Not yet verified
@@ -28,6 +28,7 @@ The first CI run passed the logic tests but detected an `NSWorkspace` isolation 
 - Full visual interaction and real confirmation dialogs for this revision.
 - Execution on Intel hardware: an Intel build was produced but not tested on an Intel device.
 - Actual login, logout, and restart behavior with this revision.
-- Developer ID signing, notarization, and binary distribution.
+- Developer ID signing and Apple notarization.
+- Downloaded-app execution on another Mac with Gatekeeper enabled.
 
 This review does not replace an independent security audit. The tests did not modify the user's browser associations.

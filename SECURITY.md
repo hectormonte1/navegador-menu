@@ -28,7 +28,11 @@ Launch Services resolves installed apps by identifier; the app does not independ
 
 HTTP and HTTPS changes are not atomic: canceling the second confirmation can leave a partial selection, which is explicitly displayed. Automated tests use a simulated system and do not exercise real consent dialogs.
 
-## Before distributing binaries to others
+## Experimental downloads and future signed releases
+
+The v1.1.1 release provides experimental ad hoc signed ZIPs and SHA-256 checksums. These downloads are not Developer ID signed or notarized, so macOS may block opening them. Building locally is the current alternative. Checksums verify file integrity, not publisher identity or Apple approval.
+
+Before offering a normal signed and notarized release:
 
 - Validate interaction and launch at login on Intel and Apple Silicon hardware and supported macOS versions.
 - Use Developer ID signing, hardened runtime, and Apple notarization; verify the result before publishing.

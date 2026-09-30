@@ -22,4 +22,4 @@ The implementation was developed with assistance from Codex. It is not a browser
 
 ## Remaining work
 
-Full manual testing of this revision, Developer ID signing and notarization for distribution, a license decision, and public screenshots without personal information. No performance or security metrics are claimed without measurement.
+Full manual testing of this revision, Developer ID signing and notarization for distribution, a license decision, and live screenshots without personal information. The README now includes an illustrated demo using fictional messages, plus experimental release downloads. No performance or security metrics are claimed without measurement.
