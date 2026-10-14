@@ -15,7 +15,10 @@ cp Resources/Info.plist "$app/Contents/Info.plist"
 plutil -lint "$app/Contents/Info.plist"
 codesign --force --sign - --options runtime "$app"
 codesign --verify --strict "$app"
+zip_temp_app_excluding_finderinfo_that_sync_restamps() {
+  ditto -c -k --norsrc --noextattr --keepParent "$1" "$2"
+}
 archive="$PWD/build/Navegador-$arch.zip"
-ditto -c -k --norsrc --noextattr --keepParent "$app" "$archive"
+zip_temp_app_excluding_finderinfo_that_sync_restamps "$app" "$archive"
 unzip -t "$archive" >/dev/null
 echo "Built build/Navegador-$arch.zip ($arch, macOS 13+)"

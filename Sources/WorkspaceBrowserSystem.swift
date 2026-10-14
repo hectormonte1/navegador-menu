@@ -3,10 +3,7 @@ import AppKit
 @MainActor
 final class WorkspaceBrowserSystem: BrowserSystem {
     func handler(_ scheme: String) -> String? {
-        guard ["http", "https"].contains(scheme),
-              let probe = URL(string: "\(scheme)://example.invalid"),
-              let url = NSWorkspace.shared.urlForApplication(toOpen: probe) else { return nil }
-        return Bundle(url: url)?.bundleIdentifier
+        LocalLaunchServicesAssociationLookup(scheme: scheme)?.registeredHandlerBundleIdentifier()
     }
 
     func applicationURL(for id: String) -> URL? {
@@ -22,6 +19,22 @@ final class WorkspaceBrowserSystem: BrowserSystem {
                     continuation.resume(returning: ())
                 }
             }
+        }
+    }
+
+    @MainActor
+    private struct LocalLaunchServicesAssociationLookup {
+        private let probe: URL
+
+        init?(scheme: String) {
+            guard ["http", "https"].contains(scheme),
+                  let probe = URL(string: "\(scheme)://example.invalid") else { return nil }
+            self.probe = probe
+        }
+
+        func registeredHandlerBundleIdentifier() -> String? {
+            guard let handlerBundle = NSWorkspace.shared.urlForApplication(toOpen: probe) else { return nil }
+            return Bundle(url: handlerBundle)?.bundleIdentifier
         }
     }
 }
