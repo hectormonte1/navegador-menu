@@ -58,13 +58,16 @@ final class BrowserService {
         guard let application = system.applicationURL(for: id) else { throw BrowserChangeError.missing }
         isChanging = true
         defer { isChanging = false }
-        // Stop after any failure/cancellation. Never silently roll back a user-approved change.
+        try await applyMissingHttpThenHttpsUntilFailureWithoutUndoingConsent(application, id: id)
+        guard state.selection(for: id) == .complete else { throw BrowserChangeError.incomplete }
+    }
+
+    private func applyMissingHttpThenHttpsUntilFailureWithoutUndoingConsent(_ application: URL, id: String) async throws {
         for scheme in ["http", "https"] {
             try Task.checkCancellation()
             if system.handler(scheme) != id {
                 try await system.setDefault(application, scheme: scheme)
             }
         }
-        guard state.selection(for: id) == .complete else { throw BrowserChangeError.incomplete }
     }
 }
