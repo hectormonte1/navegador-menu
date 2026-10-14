@@ -43,8 +43,8 @@ bash build.sh
 The output is `build/Navegador-arm64.zip` or `build/Navegador-x86_64.zip`, depending on the architecture. Architecture is detected automatically, or you can select it explicitly:
 
 ```bash
-ARCH=arm64 bash build.sh    # Apple Silicon
-ARCH=x86_64 bash build.sh   # Intel
+ARCH=arm64 bash build.sh
+ARCH=x86_64 bash build.sh
 ```
 
 Each build targets one architecture. Building does not install or launch the app, or change system preferences. The minimum macOS version is set explicitly in both the executable and the manifest to prevent accidental compatibility issues.

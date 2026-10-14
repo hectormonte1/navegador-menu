@@ -15,8 +15,6 @@ cp Resources/Info.plist "$app/Contents/Info.plist"
 plutil -lint "$app/Contents/Info.plist"
 codesign --force --sign - --options runtime "$app"
 codesign --verify --strict "$app"
-# Package the verified bundle before a synced directory can add Finder metadata.
-# The archive contains only the app; no caches, certificates or source paths.
 archive="$PWD/build/Navegador-$arch.zip"
 ditto -c -k --norsrc --noextattr --keepParent "$app" "$archive"
 unzip -t "$archive" >/dev/null

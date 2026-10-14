@@ -58,7 +58,6 @@ final class BrowserService {
         guard let application = system.applicationURL(for: id) else { throw BrowserChangeError.missing }
         isChanging = true
         defer { isChanging = false }
-        // Stop after any failure/cancellation. Never silently roll back a user-approved change.
         for scheme in ["http", "https"] {
             try Task.checkCancellation()
             if system.handler(scheme) != id {
